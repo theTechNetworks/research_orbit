@@ -1,0 +1,79 @@
+{% extends "index.html" %}
+
+{% block title %}My Research Topics{% endblock %}
+
+{% block content %}
+<!-- Banner -->
+<section>
+    <div class="inner">
+        <header class="major">
+            <h1>My Research Topics</h1>
+        </header>
+        <div class="content">
+            <p>Here are the research topics you have created:</p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div id="main">
+    <!-- Research Topics Table -->
+    <section id="topics">
+        <div class="inner">
+            <h2>Research Topics List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Research Type</th>
+                        <th>Organization</th>
+                        <th>Description</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if topics %}
+                        {% for topic in topics %}
+                            <tr>
+                                <td><a href="{{ url_for('views.view_topic', topic_id=topic.id) }}">{{ topic.title }}</a></td>
+                                <td>{{ topic.research_type }}</td>
+                                <td>{{ topic.organization }}</td>
+                                <td>{{ topic.description }}</td>
+                                <td>{{ topic.date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                <td>
+                                    <form action="{{ url_for('views.delete_topic', topic_id=topic.id) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="button small">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6">No research topics found.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="inner">
+        <ul class="icons">
+            <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+            <li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; techNets</li>
+            <li>Design: <a href="#">techNets</a></li>
+        </ul>
+    </div>
+</footer>
+
+{% endblock %}

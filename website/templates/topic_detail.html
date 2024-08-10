@@ -1,0 +1,49 @@
+{% extends "index.html" %}
+
+{% block title %}Research Topic Detail{% endblock %}
+
+{% block content %}
+<!-- Banner -->
+<section>
+    <div class="inner">
+        <header class="major">
+            <h1>Research Topic Detail</h1>
+        </header>
+        <div class="content">
+            <p>Details for the research topic:</p>
+            <h2>{{ topic.title }}</h2>
+            <p><strong>Research Type:</strong> {{ topic.research_type }}</p>
+            <p><strong>Organization:</strong> {{ topic.organization }}</p>
+            <p><strong>Description:</strong> {{ topic.description }}</p>
+            <p><strong>Papers Added: {{ paper_count}}</strong></p>
+            <p><strong>Date Created:</strong> {{ topic.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- Actions -->
+<section>
+    <div class="inner">
+        <a href="{{ url_for('views.view_topics') }}" class="button">Back to Topics</a>
+        <a href="{{ url_for('auth.add_paper',topic_id=topic.id )}}" class="button">Add Paper</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="inner">
+        <ul class="icons">
+            <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+            <li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; techNets</li>
+            <li>Design: <a href="#">techNets</a></li>
+        </ul>
+    </div>
+</footer>
+
+{% endblock %}
