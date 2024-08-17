@@ -128,8 +128,6 @@ def add_paper(topic_id):
             flash('Name of author should be more than 10 characters.', category='error')
         elif len(ISBN) < 4:
             flash('Paper ISBN should be more than 4 characters.', category='error')
-        elif len(abstract) < 100:
-            flash('Paper abstract should be more than 100 characters.', category='error')
         else:
             new_paper = Papers(
                 title=title,
@@ -143,6 +141,38 @@ def add_paper(topic_id):
             db.session.add(new_paper)
             db.session.commit()
             flash('Research paper has successfully been added.', category='success')
-            return redirect(url_for('views.view_topic'),topic_id=topic_id)  # Redirect to a page after adding a paper
+            return redirect(url_for('views.view_topic',topic_id=topic_id))  # Redirect to a page after adding a paper
 
     return render_template('add_paper.html', user=current_user)
+
+@auth.route('/add_note/<int:paper_id>', methods=['POST', 'GET'])
+@login_required
+def add_note(paper_id):
+    if request.method == 'POST':
+        note_data = request.form.get('note')
+        if len(note_data) < 1:
+            flash('Note is too short!', category='error')
+        else:
+            new_note = Note(data=note_data, user_id=current_user.id, paper_id=paper_id)
+            db.session.add(new_note)
+            db.session.commit()
+            flash('Note added!', category='success')
+            return redirect(url_for('views.view_paper', paper_id=paper_id))
+    
+    return render_template("note_form.html", paper_id=paper_id, edit_mode=False)
+
+@auth.route('/edit_note/<int:note_id>', methods=['POST', 'GET'])
+@login_required
+def edit_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    if request.method == 'POST':
+        note_data = request.form.get('note')
+        if len(note_data) < 1:
+            flash('Note is too short!', category='error')
+        else:
+            note.data = note_data
+            db.session.commit()
+            flash('Note updated!', category='success')
+            return redirect(url_for('views.view_paper', paper_id=note.paper_id))
+    
+    return render_template("note_form.html", note=note, edit_mode=True)

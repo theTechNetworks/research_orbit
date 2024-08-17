@@ -7,16 +7,19 @@
 <section>
     <div class="inner">
         <header class="major">
-            <h1>Research Topic Detail</h1>
+            <h1>Research Paper Detail</h1>
         </header>
         <div class="content">
             <p>Details for the research topic:</p>
-            <h2>{{ topic.title }}</h2>
-            <p><strong>Research Type:</strong> {{ topic.research_type }}</p>
-            <p><strong>Organization:</strong> {{ topic.organization }}</p>
-            <p><strong>Description:</strong> {{ topic.description }}</p>
-            <p><strong>Papers Added: {{ paper_count}}</strong></p>
-            <p><strong>Date Created:</strong> {{ topic.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <h2>{{ paper.title }}</h2>
+            <p><strong>DOI:</strong> {{ paper.doi }}</p>
+            <p><strong>Author:</strong> {{ paper.author }}</p>
+            <p><strong>Abstract:</strong> {{ paper.abstract }}</p>
+            <p><strong>Date Created:</strong> {{ paper.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            {% if note %}
+                <p><strong>Note : {{ note.data}}</strong></p>
+                <p><strong>Date Updated:</strong> {{ note.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -24,9 +27,14 @@
 <!-- Actions -->
 <section>
     <div class="inner">
-        <a href="{{ url_for('views.view_topics') }}" class="button">Back to Topics</a>
-        <a href="{{ url_for('auth.add_paper',topic_id=topic.id )}}" class="button">Add Paper</a>
-        <a href="{{ url_for('views.view_papers',topic_id=topic.id )}}" class="button">View Papers</a>
+        <a href="{{ url_for('views.view_papers',topic_id = topic_id) }}" class="button">Back to Topics</a>
+        
+        {% if note %}
+        <!--Show edit note if a note does not exist-->
+            <a href="{{ url_for('auth.edit_note',note_id=note.id )}}" class="button">Edit Note</a>
+        {% else %}
+            <a href="{{ url_for('auth.add_note',paper_id = paper.id )}}" class="button">Add Note</a>
+        {% endif%}
     </div>
 </section>
 

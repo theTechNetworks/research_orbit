@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+{% block title %}
+    {% if edit_mode %} Edit Note {% else %} Add Note {% endif %}
+{% endblock %}
+{% block content %}
+<h1 align="center">
+    {% if edit_mode %} Edit Note {% else %} Add Note {% endif %}
+</h1>
+
+<!-- Form for adding or editing a note -->
+<form method="post">
+    <textarea name="note" id="note" class="form-control">{% if edit_mode %}{{ note.data }}{% endif %}</textarea>
+    <br/>
+    <div align="center">
+        <button type="submit" class="btn btn-primary">
+            {% if edit_mode %} Update Note {% else %} Add Note {% endif %}
+        </button>
+    </div>
+</form>
+
+<!-- List existing notes only when NOT in edit mode -->
+{% if edit_mode %}
+    <ul class="list-group list-group-flush" id="notes">
+        {% for note in user.notes %}
+        <li class="list-group-item">
+            {{ note.data }}
+            <a href="{{ url_for('auth.edit_note', paper_id=paper_id, note_id=note.id) }}" class="btn btn-sm btn-warning">Edit</a>
+            <button type="button" class="close" onclick="deleteNote({{ note.id }})">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}
